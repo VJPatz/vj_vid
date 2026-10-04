@@ -131,10 +131,10 @@ export const MOTION = Object.freeze({
   // Default ramp: strong identity lock at the start, loosening as the clip
   // progresses, so later frames can move more. Override via URL params
   // (?anchorStart=&anchorEnd=&driftStart=&driftEnd=) if you want to recalibrate.
-  ANCHOR_STRENGTH_START: 0.45,
-  ANCHOR_STRENGTH_END: 0.2,
-  LATENT_DRIFT_START: 3,
-  LATENT_DRIFT_END: 10,
+  ANCHOR_STRENGTH_START: 0.4,
+  ANCHOR_STRENGTH_END: 0.3,
+  LATENT_DRIFT_START: 4,
+  LATENT_DRIFT_END: 7,
 });
 
 /** Hard product limits. The 20s cap is a deliberate scope decision (lightweight/fast). */
