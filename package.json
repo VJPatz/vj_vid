@@ -12,7 +12,7 @@
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "check": "node scripts/check.mjs",
-    "test": "node --test \"test/**/*.test.mjs\"",
+    "test": "node --test test/*.test.mjs",
     "verify": "npm run check && npm run test",
     "clean": "node -e \"import('node:fs').then(f=>['dist','public/ort','node_modules/.vite'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\""
   },
