@@ -9,7 +9,7 @@ No server. No API keys. No inference cost. Every forward pass — text
 encoding, denoising, decoding, optical-flow interpolation, H.264 encoding —
 executes on the user's own GPU via WebGPU, or falls back to WASM.
 
-[**Try it live**](#) · [Watch on YouTube](#) · [Architecture](#architecture) · [Why edge AI](#why-edge-ai) · [Contributing](#contributing) · [Disclaimer](#disclaimer)
+[**Try it live**](https://vjpatz.github.io/vj_vid/) · [Watch on YouTube](#) · [Architecture](#architecture) · [Why edge AI](#why-edge-ai) · [Contributing](#contributing) · [Disclaimer](#disclaimer)
 
 </div>
 
