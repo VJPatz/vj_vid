@@ -1,0 +1,27 @@
+{
+  "name": "vj_vid",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Text-to-video generation that runs entirely in your browser. No backend, no API, no server inference. Works offline after the first run.",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "postinstall": "node scripts/copy-ort-assets.mjs",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "check": "node scripts/check.mjs",
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "verify": "npm run check && npm run test",
+    "clean": "node -e \"import('node:fs').then(f=>['dist','public/ort','node_modules/.vite'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\""
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.0.0",
+    "mp4-muxer": "^5.0.0",
+    "onnxruntime-web": "1.17.1"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
