@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Text-to-video generation that runs entirely in your browser. No backend, no API, no server inference. Works offline after the first run.",
+  "description": "Image and video generation that runs entirely in your browser. No backend, no API, no server inference. Works offline after the first run.",,
   "license": "MIT",
   "engines": { "node": ">=18" },
   "scripts": {
