@@ -9,15 +9,15 @@ No server. No API keys. No inference cost. Every forward pass — text
 encoding, denoising, decoding, optical-flow interpolation, H.264 encoding —
 executes on the user's own GPU via WebGPU, or falls back to WASM.
 
-[**Try it live**](#) · [Watch on YouTube](#) · [Architecture](#architecture) · [Why edge AI](#why-edge-ai) · [Contributing](#contributing) · [Disclaimer](#disclaimer)
+[**Try it live**](#) · [Watch on YouTube](#) · [Architecture](#architecture) · [Why edge AI](#why-edge-ai) · [Requirements](#system-requirements) · [Contributing](#contributing) · [Disclaimer](#disclaimer)
 
 </div>
 
 ---
 
-## What this is
+## What the tool is
 
-Type a prompt. Get an image, or a short mp4, generated on your own machine —
+Type a prompt. Get an image, or a short mp4 upto 20 seconds, generated on your own machine —
 nothing leaves the browser after the page first loads.
 
 ```
@@ -37,10 +37,14 @@ that is fully **offline**.
 
 **[→ Open the deployed app](#)** — no install, nothing to run locally.
 
-First load downloads ~2.5 GB of model weights once (progress shown live,
-with a percentage and bytes downloaded/remaining). After that, weights are
-cached in your browser (OPFS) and every generation after the first is
-instant-start.
+**How to use it**
+
+1. Open the page and type a prompt.
+2. Pick **Image** or **Video**, then hit Generate.
+3. Download the result as **PNG** (image) or **MP4** (video).
+
+The first run downloads the models, which takes a while. After that, the page 
+starts generating right away, even on later visits.
 
 If you find this useful or interesting, a ⭐ on the repo helps it get seen —
 and PRs/forks are genuinely welcome, see [Contributing](#contributing).
@@ -50,7 +54,7 @@ and PRs/forks are genuinely welcome, see [Contributing](#contributing).
 [![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
 
 *Click to watch on YouTube — walkthrough of image/video generation running
-entirely in-browser, no server round-trip.*
+entirely in-browser*
 
 ## Why edge AI
 
@@ -114,15 +118,12 @@ visually close to begin with (see the anchor-blend design below).
 
 ## What's borrowed vs. what's built
 
-To be direct about it: neither model's weights are mine.
-
 | | |
 |---|---|
-| **Not mine** | SD-Turbo weights ([Stability AI](https://huggingface.co/stabilityai/sd-turbo)), browser-ready ONNX export ([schmuell/sd-turbo-ort-web](https://huggingface.co/schmuell/sd-turbo-ort-web)), RIFE v4.9 weights ([edgetools/rife](https://huggingface.co/edgetools/rife)) |
-| **Mine** | The browser inference runtime, the WebGPU→WASM execution pipeline shared across both models, the resumable weight-caching layer, the memory-budgeted session lifecycle, the latent-motion coherence system, the RIFE-based video assembly pipeline, and the debugging that got two different model classes to actually run reliably client-side |
+| **Borrowed** | SD-Turbo weights ([Stability AI](https://huggingface.co/stabilityai/sd-turbo)), browser-ready ONNX export ([schmuell/sd-turbo-ort-web](https://huggingface.co/schmuell/sd-turbo-ort-web)), RIFE v4.9 weights ([edgetools/rife](https://huggingface.co/edgetools/rife)) |
+| **Built** | The browser inference runtime, the WebGPU→WASM execution pipeline shared across both models, the resumable weight-caching layer, the memory-budgeted session lifecycle, the latent-motion coherence system, the RIFE-based video assembly pipeline, and the debugging that got two different model classes to actually run reliably client-side |
 
-This is the engineering built *around* pretrained models — the relationship
-essentially all applied-ML work has to foundation models. The skill on
+This is the engineering built *around* pretrained models. The skill on
 display isn't training SD-Turbo or RIFE; it's making two independently-built
 models run fast and reliably together under constraints an API call never
 exposes: no server, no control over the client's GPU, no control over the
@@ -141,6 +142,42 @@ closed/finished artifact. Useful starting points:
   no GPU required.
 
 If this is useful to you, starring the repo helps others find it.
+
+## System requirements
+
+Everything runs on your own hardware, so how it operates depends on your machine.
+**Image generation works on almost anything. Video generation wants a deicated GPU.**
+
+| | What you need |
+|---|---|
+| **Browser** | Recent desktop Chrome or Edge (WebGPU + WebCodecs required) |
+| **RAM** | 8 GB recommended. Models load one phase at a time, so peak working memory stays around 2.5 GB |
+| **Disk** | ~3 GB free for the one-time model cache (stored in browser storage, not RAM) |
+| **GPU** | Integrated Graphics is enough for images. A dedicated GPU for video |
+
+### What to expect on your hardware
+
+| Your setup | Image | Video |
+|---|---|---|
+| **Everyday laptop, integrated graphics** | ✅ Works well | ⚠️ Not recommended. Slow, may stall the system |
+| **Entry-level dedicated GPU (e.g. RTX 3050)** | ✅ Fast | ✅ Works, but takes a while |
+| **Mid-range / high-end GPU** | ✅ Fast | ✅ Smooth, no system stalling |
+
+- **If the page stalls or freezes, just refresh.** Your cached models stay put,
+  so you can reload and try again without re-downloading anything. If a video
+  was too heavy for your GPU, try a shorter clip.
+
+### Good to know
+
+- **Integrated graphics share system RAM.** There's no separate video memory, so
+  close heavy tabs and apps before generating.
+- **Not sure what your machine can do?** Start with image mode. If it runs
+  comfortably, try a short video next.
+- **No WebGPU?** The app falls back to CPU (WASM). It still works, but expect
+  it to be much slower.
+- **First run only:** ~2.5 GB of model weights download once, then cache. Every
+  run after that is offline and starts instantly.
+
 
 ## Quick start
 
@@ -165,8 +202,8 @@ npm run preview  # serve the built bundle
 - **Video mode** — multiple keyframes, 2–20s, 30fps, 512×512 → mp4.
 - **Deterministic generation** — same prompt + seed supposedly reproduces identical
   output, on any machine.
-- **Fully offline after first load** — resumable, chunked downloads into
-  OPFS; no re-fetch on reload.
+- **Instant downloads** — save any generated image as a PNG and video as an MP4, straight from the page.
+- **Download once, use anytime** — model weights stay cached in your browser, even after you close the tab and come back later. They're only removed if you clear the site's data yourself. Resumable if the first download is interrupted.
 - **Live progress** — percentage + bytes downloaded/total on first run,
   per-keyframe progress during generation, for every phase of the pipeline.
 
